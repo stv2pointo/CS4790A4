@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron" style="text-align:center">
+    <h1 class="lead">ARCC Proposals</h1>
+    <p>Score the Weber State ARCC Proposals Here</p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+       
+    </div>
+    <div class="col-md-4" style="text-align:center">
+        <input type="button" onclick="@("location.href='"+ Url.Action("Login","Users")+ "'")" value="Log In" class="btn btn-lg"/>
+        <input type="button" onclick="@("location.href='"+ Url.Action("Create","Users")+ "'")" value="Sign Up" class="btn btn-lg"/>
+    </div>
+    <div class="col-md-4">
+
+    </div>
+</div>

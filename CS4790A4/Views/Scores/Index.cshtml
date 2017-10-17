@@ -1,0 +1,56 @@
+﻿@model IEnumerable<CS4790A4.Models.Score>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.proposalId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.criteriaId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.givenScore)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.editedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.editTime)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.proposalId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.criteriaId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.givenScore)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.editedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.editTime)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

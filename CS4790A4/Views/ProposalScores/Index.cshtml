@@ -1,0 +1,89 @@
+﻿@model IEnumerable<CS4790A4.ViewModels.ProposalScores>
+@{
+    ViewBag.Title = "ARCC Proposals";
+}
+
+<h4>Welcome @Session["Username"]</h4>
+ 
+    <div id="editDiv"></div>
+
+    <table id="mainTable" class="table table-condensed table-hover table-responsive">
+    <thead class="thead">
+        <tr>
+            <th>
+
+            </th>
+
+            <th>
+                Proposal
+            </th>
+            <th>
+
+            </th>
+            @foreach (var pr in Model)
+            {
+                foreach (var sv in pr.scoresViews)
+                {
+                    string desc = sv.criteria.description;
+                    <th style="max-width: 60px">
+                        <div style="-webkit-transform: rotate(-60deg); height: 90px;" data-toggle="tooltip" title="@(desc)" data-animation="true" data-placement="bottom">
+                            <a title="" data-toggle="tooltip" href="#">@Html.Label(sv.criteria.CriteriaName)</a>
+                            @*<a class="left" title="" data-placement="left" data-toggle="tooltip" href="#" data-original-title="testing">@Html.Label(sv.criteria.CriteriaName)</a>*@
+                        </div>
+                    </th>
+                }
+                break;
+            }
+            <th></th>
+        </tr>
+    </thead>
+    @{ int rank = 0;}
+    @foreach (var item in Model)
+    {
+            rank++;
+        
+            <tr class="@(item.proposal.isComplete == false ? "warning" : "")">
+                <td>
+                    @Html.DisplayFor(modelItem => item.proposal.isComplete)
+                </td>
+
+                <td>
+                    <img src="@Url.Content(item.proposal.imagePath)" alt="Image" height="50" width="45" />
+                    @{
+                        if (rank <= 3)
+                        {
+                            <span class="badge">@(rank.ToString())</span>
+                        }
+                    }
+                   
+                    @Html.DisplayFor(modelItem => item.proposal.proposalName)
+                </td>
+                <td>
+                    @{
+                        string btnName = "Score Now", blinkClass = "button-glow";// "blink";
+                        if (item.proposal.isComplete)
+                        { btnName = "Edit Rating"; blinkClass = ""; }
+                    }
+                    @{ string methodCall = "loadAjaxEdit('#prop" + item.proposal.Id.ToString() + "', " + item.proposal.Id.ToString() + ")";}
+                    <button onclick="@(methodCall)" class="@(blinkClass)">@btnName</button>
+                </td>
+                @foreach (var sv in item.scoresViews)
+                {
+                    <th>
+                        @{ string displayNum = sv.score.givenScore.ToString();
+                            if (sv.score.givenScore != null) { displayNum += " / " + sv.criteria.maxScore.ToString(); }
+                            else { displayNum = "-"; }
+                        }
+                        @Html.Label(displayNum)
+                    </th>
+                            }
+            </tr>
+                            }
+</table>
+
+
+
+    @section Scripts {
+        <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+        <script src="~/Custom_Scripts/RateProposal.js"></script>
+    }

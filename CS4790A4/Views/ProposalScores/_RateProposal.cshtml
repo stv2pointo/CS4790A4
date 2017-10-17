@@ -1,0 +1,58 @@
+﻿@model CS4790A4.ViewModels.ProposalScores
+
+<h1 style="text-align: center">@Model.proposal.proposalName</h1>
+<p style="text-align: center"><img src="@Url.Content(Model.proposal.imagePath)" alt="Image" height="100" width="85" /></p>
+@using (Html.BeginForm("_RateProposal", "ProposalScores"))
+{
+
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.proposal.Id, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.HiddenFor(model => model.proposal.proposalName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.HiddenFor(model => model.proposal.isComplete, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.HiddenFor(model => model.proposal.imagePath, new { htmlAttributes = new { @class = "form-control" } })
+
+        @for (int i = 0; i < Model.scoresViews.Count; i++)
+        {
+            <fieldset class="form-group">
+                @Html.Label(Model.scoresViews[i].criteria.description)
+                <br />
+                <br />
+                @Html.Label(Model.scoresViews[i].criteria.CriteriaName, htmlAttributes: new { @class = "control-label col-md-2", style = "margin-top:30px" })
+                <div class="col-md-1" style="margin-top: 15px">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => Model.scoresViews[i].score.Id, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.HiddenFor(model => Model.scoresViews[i].score.proposalId, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.HiddenFor(model => Model.scoresViews[i].score.criteriaId, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.HiddenFor(model => Model.scoresViews[i].score.editedBy, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.HiddenFor(model => Model.scoresViews[i].score.editTime, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.HiddenFor(model => Model.scoresViews[i].criteria.Id, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.HiddenFor(model => Model.scoresViews[i].criteria.CriteriaName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.HiddenFor(model => Model.scoresViews[i].criteria.description, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.HiddenFor(model => Model.scoresViews[i].criteria.ratingsSugg, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.HiddenFor(model => Model.scoresViews[i].criteria.maxScore, new { htmlAttributes = new { @class = "form-control" } })
+                    @{ string maxStr = Model.scoresViews[i].criteria.maxScore.ToString();}
+                    @Html.EditorFor(model => Model.scoresViews[i].score.givenScore,
+                        new { htmlAttributes = new { @class = "form-control", aria_describedby = "suggs", style = "margin-top:15px", max = maxStr, min = "0" } })
+                    @Html.ValidationMessageFor(model => Model.scoresViews[i].score.givenScore, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-6 col-md-offset-1" style="text-align:left">
+                    <p><strong>Rating Suggestions</strong></p>
+                    <pre id="suggs" class="form-text" style="background-color:lightgray">@Model.scoresViews[i].criteria.ratingsSugg</pre>
+                </div>
+            </fieldset>
+            <br/>
+        }
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                @Html.ActionLink("Back to List", "Index", "ProposalScores")
+                <input type="submit" value="Save" class="btn btn-primary" style="margin-left:10px" />
+            </div>
+        </div>
+    </div>
+}
+
